@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { ChatInterface } from "@/components/chat/chat-interface"
 import { ResponsePanel } from "@/components/chat/response-panel"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, ChevronLeft, ChevronRight, PanelLeftClose, PanelLeftOpen } from "lucide-react"
+import { ArrowLeft, ChevronLeft, ChevronRight, CloudCog, PanelLeftClose, PanelLeftOpen } from "lucide-react"
 
 export default function ChatPage() {
   const router = useRouter()
@@ -34,6 +34,7 @@ export default function ChatPage() {
       })
 
       const data = await response.json()
+      console.log(data)
       setTaskResults(data)
       setSelectedPatients(data.patients || [])
     } catch (error) {
