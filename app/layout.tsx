@@ -4,6 +4,7 @@ import { Poppins, Libre_Baskerville, IBM_Plex_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { AIChatbot } from "@/components/ai-chatbot"
 import "./globals.css"
+import { LayoutWrapper } from "@/components/layout-wrapper"
 
 const fontSans = Poppins({
   subsets: ["latin"],
@@ -52,9 +53,6 @@ export const viewport: Viewport = {
   maximumScale: 1,
 }
 
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -63,15 +61,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-background">
       <body className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} font-sans antialiased`}>
-        <SidebarProvider defaultOpen={true}>
-          <AppSidebar />
-          <SidebarInset>
-            <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 md:hidden">
-              <SidebarTrigger className="-ml-1" />
-            </header>
-            {children}
-          </SidebarInset>
-        </SidebarProvider>
+        <LayoutWrapper>{children}</LayoutWrapper>
         <AIChatbot />
         <Analytics />
       </body>
