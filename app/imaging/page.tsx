@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppSidebar } from "@/components/app-sidebar"
 import { PageHeader } from "@/components/page-header"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -152,137 +151,133 @@ export default function ImagingPage() {
   }
 
   return (
-    <div className="flex min-h-screen">
-      <AppSidebar />
+    <main className="flex-1">
+      <div className="container py-8 px-8">
+        <PageHeader title="Documents & Imaging" description="Browse and manage orthopedic imaging studies" />
 
-      <main className="flex-1 ml-64">
-        <div className="container py-8 px-8">
-          <PageHeader title="Documents & Imaging" description="Browse and manage orthopedic imaging studies" />
+        {/* Filters */}
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <div className="flex flex-wrap gap-3">
+              <Select value={modalityFilter} onValueChange={setModalityFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Modality" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Modalities</SelectItem>
+                  <SelectItem value="X-Ray">X-Ray</SelectItem>
+                  <SelectItem value="CT">CT Scan</SelectItem>
+                  <SelectItem value="MRI">MRI</SelectItem>
+                  <SelectItem value="Ultrasound">Ultrasound</SelectItem>
+                </SelectContent>
+              </Select>
 
-          {/* Filters */}
-          <Card className="mb-6">
-            <CardContent className="pt-6">
-              <div className="flex flex-wrap gap-3">
-                <Select value={modalityFilter} onValueChange={setModalityFilter}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Modality" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Modalities</SelectItem>
-                    <SelectItem value="X-Ray">X-Ray</SelectItem>
-                    <SelectItem value="CT">CT Scan</SelectItem>
-                    <SelectItem value="MRI">MRI</SelectItem>
-                    <SelectItem value="Ultrasound">Ultrasound</SelectItem>
-                  </SelectContent>
-                </Select>
+              <Select value={bodyPartFilter} onValueChange={setBodyPartFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Body Part" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Body Parts</SelectItem>
+                  <SelectItem value="Knee">Knee</SelectItem>
+                  <SelectItem value="Lumbar Spine">Lumbar Spine</SelectItem>
+                  <SelectItem value="Cervical Spine">Cervical Spine</SelectItem>
+                  <SelectItem value="Shoulder">Shoulder</SelectItem>
+                  <SelectItem value="Ankle">Ankle</SelectItem>
+                  <SelectItem value="Hip">Hip</SelectItem>
+                </SelectContent>
+              </Select>
 
-                <Select value={bodyPartFilter} onValueChange={setBodyPartFilter}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Body Part" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Body Parts</SelectItem>
-                    <SelectItem value="Knee">Knee</SelectItem>
-                    <SelectItem value="Lumbar Spine">Lumbar Spine</SelectItem>
-                    <SelectItem value="Cervical Spine">Cervical Spine</SelectItem>
-                    <SelectItem value="Shoulder">Shoulder</SelectItem>
-                    <SelectItem value="Ankle">Ankle</SelectItem>
-                    <SelectItem value="Hip">Hip</SelectItem>
-                  </SelectContent>
-                </Select>
+              <Select value={yearFilter} onValueChange={setYearFilter}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Year" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Years</SelectItem>
+                  <SelectItem value="2024">2024</SelectItem>
+                  <SelectItem value="2023">2023</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-                <Select value={yearFilter} onValueChange={setYearFilter}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Year" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Years</SelectItem>
-                    <SelectItem value="2024">2024</SelectItem>
-                    <SelectItem value="2023">2023</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="mt-4 text-sm text-muted-foreground">
+              Showing {filteredStudies.length} imaging {filteredStudies.length === 1 ? "study" : "studies"}
+            </div>
+          </CardContent>
+        </Card>
 
-              <div className="mt-4 text-sm text-muted-foreground">
-                Showing {filteredStudies.length} imaging {filteredStudies.length === 1 ? "study" : "studies"}
-              </div>
-            </CardContent>
-          </Card>
+        {/* Grid */}
+        {filteredStudies.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filteredStudies.map((study) => (
+              <Card key={study.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <div
+                  className="relative aspect-square bg-muted group cursor-pointer"
+                  onClick={() => openImageView(study)}
+                >
+                  <img
+                    src={study.thumbnail || "/placeholder.svg"}
+                    alt={study.studyType}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <Button variant="secondary" size="sm">
+                      <Maximize2 className="h-4 w-4 mr-2" />
+                      View Full Size
+                    </Button>
+                  </div>
+                  {study.aiFlag && (
+                    <Badge
+                      variant="outline"
+                      className={`absolute top-3 right-3 ${getAiFlagColor(study.aiFlag)} flex items-center gap-1`}
+                    >
+                      {getAiFlagIcon(study.aiFlag)}
+                      {study.aiFlag}
+                    </Badge>
+                  )}
+                </div>
 
-          {/* Grid */}
-          {filteredStudies.length > 0 ? (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredStudies.map((study) => (
-                <Card key={study.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  <div
-                    className="relative aspect-square bg-muted group cursor-pointer"
-                    onClick={() => openImageView(study)}
-                  >
-                    <img
-                      src={study.thumbnail || "/placeholder.svg"}
-                      alt={study.studyType}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <Button variant="secondary" size="sm">
-                        <Maximize2 className="h-4 w-4 mr-2" />
-                        View Full Size
-                      </Button>
-                    </div>
-                    {study.aiFlag && (
-                      <Badge
-                        variant="outline"
-                        className={`absolute top-3 right-3 ${getAiFlagColor(study.aiFlag)} flex items-center gap-1`}
-                      >
-                        {getAiFlagIcon(study.aiFlag)}
-                        {study.aiFlag}
-                      </Badge>
-                    )}
+                <CardContent className="p-4">
+                  <h3 className="font-semibold text-foreground mb-1">{study.studyType}</h3>
+                  <p className="text-sm text-muted-foreground mb-3">{study.patientName}</p>
+
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    <Badge variant="outline">{study.modality}</Badge>
+                    <Badge variant="outline">{study.bodyPart}</Badge>
                   </div>
 
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-foreground mb-1">{study.studyType}</h3>
-                    <p className="text-sm text-muted-foreground mb-3">{study.patientName}</p>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
+                    <span>{study.date}</span>
+                    <span className="font-mono">{study.id}</span>
+                  </div>
 
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      <Badge variant="outline">{study.modality}</Badge>
-                      <Badge variant="outline">{study.bodyPart}</Badge>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-                      <span>{study.date}</span>
-                      <span className="font-mono">{study.id}</span>
-                    </div>
-
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex-1 bg-transparent"
-                        onClick={() => openImageView(study)}
-                      >
-                        <Eye className="h-4 w-4 mr-1" />
-                        View
-                      </Button>
-                      <Button variant="ghost" size="sm">
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <Card>
-              <CardContent className="py-24 text-center">
-                <FileImage className="h-20 w-20 mx-auto text-muted-foreground opacity-20 mb-4" />
-                <h3 className="text-lg font-semibold text-foreground mb-2">No Imaging Studies Found</h3>
-                <p className="text-muted-foreground">Try adjusting your filters to see more results</p>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      </main>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 bg-transparent"
+                      onClick={() => openImageView(study)}
+                    >
+                      <Eye className="h-4 w-4 mr-1" />
+                      View
+                    </Button>
+                    <Button variant="ghost" size="sm">
+                      <Download className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Card>
+            <CardContent className="py-24 text-center">
+              <FileImage className="h-20 w-20 mx-auto text-muted-foreground opacity-20 mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">No Imaging Studies Found</h3>
+              <p className="text-muted-foreground">Try adjusting your filters to see more results</p>
+            </CardContent>
+          </Card>
+        )}
+      </div>
 
       {/* Image View Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -394,6 +389,6 @@ export default function ImagingPage() {
           )}
         </DialogContent>
       </Dialog>
-    </div>
+    </main>
   )
 }

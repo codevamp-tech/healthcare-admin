@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppSidebar } from "@/components/app-sidebar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -101,93 +100,91 @@ export default function BillingPage() {
   }
 
   return (
-    <div className="flex min-h-screen">
-      <AppSidebar />
+    <main className="flex-1">
+      <div className="container py-8 px-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Billing</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Manage invoices and patient billing</p>
+        </div>
 
-      <main className="flex-1 ml-64">
-        <div className="container py-8 px-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">Billing</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Manage invoices and patient billing</p>
-          </div>
-
-          {/* Billing Stats */}
-          <div className="grid gap-6 md:grid-cols-3 mb-8">
-            <Card
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => setSelectedStat("revenue")}
-            >
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total Revenue</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">₹4,75,000</div>
-                <p className="text-xs text-muted-foreground mt-1">This month</p>
-              </CardContent>
-            </Card>
-
-            <Card
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => setSelectedStat("outstanding")}
-            >
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Outstanding</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold flex items-center gap-2">
-                  <TrendingUp className="h-6 w-6 text-orange-600" />
-                  ₹45,000
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">Pending payment</p>
-              </CardContent>
-            </Card>
-
-            <Card
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => setSelectedStat("invoices")}
-            >
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total Invoices</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold flex items-center gap-2">
-                  <Clock className="h-6 w-6 text-blue-600" />
-                  186
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">All time</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card className="mb-8">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0">
-              <CardTitle>Billing Trends</CardTitle>
-              <div className="flex gap-2">
-                <Button
-                  variant={timeFilter === "day" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setTimeFilter("day")}
-                >
-                  Day
-                </Button>
-                <Button
-                  variant={timeFilter === "month" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setTimeFilter("month")}
-                >
-                  Month
-                </Button>
-                <Button
-                  variant={timeFilter === "year" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setTimeFilter("year")}
-                >
-                  Year
-                </Button>
-              </div>
+        {/* Billing Stats */}
+        <div className="grid gap-6 md:grid-cols-3 mb-8">
+          <Card
+            className="cursor-pointer hover:shadow-lg transition-shadow"
+            onClick={() => setSelectedStat("revenue")}
+          >
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Revenue</CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
+              <div className="text-2xl font-bold">₹4,75,000</div>
+              <p className="text-xs text-muted-foreground mt-1">This month</p>
+            </CardContent>
+          </Card>
+
+          <Card
+            className="cursor-pointer hover:shadow-lg transition-shadow"
+            onClick={() => setSelectedStat("outstanding")}
+          >
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Outstanding</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold flex items-center gap-2">
+                <TrendingUp className="h-6 w-6 text-orange-600" />
+                ₹45,000
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">Pending payment</p>
+            </CardContent>
+          </Card>
+
+          <Card
+            className="cursor-pointer hover:shadow-lg transition-shadow"
+            onClick={() => setSelectedStat("invoices")}
+          >
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Invoices</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold flex items-center gap-2">
+                <Clock className="h-6 w-6 text-blue-600" />
+                186
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">All time</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="mb-8">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0">
+            <CardTitle>Billing Trends</CardTitle>
+            <div className="flex gap-2">
+              <Button
+                variant={timeFilter === "day" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setTimeFilter("day")}
+              >
+                Day
+              </Button>
+              <Button
+                variant={timeFilter === "month" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setTimeFilter("month")}
+              >
+                Month
+              </Button>
+              <Button
+                variant={timeFilter === "year" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setTimeFilter("year")}
+              >
+                Year
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={getChartData()}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey={timeFilter === "day" ? "day" : timeFilter === "month" ? "month" : "year"} />
@@ -196,17 +193,19 @@ export default function BillingPage() {
                   <Bar dataKey="revenue" fill="#10b981" />
                 </BarChart>
               </ResponsiveContainer>
-            </CardContent>
-          </Card>
+            </div>
+          </CardContent>
+        </Card>
 
-          {/* Revenue Breakdown */}
-          <div className="grid gap-6 md:grid-cols-2 mb-8">
-            <Card>
-              <CardHeader>
-                <CardTitle>Revenue Breakdown</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
+        {/* Revenue Breakdown */}
+        <div className="grid gap-6 md:grid-cols-2 mb-8">
+          <Card>
+            <CardHeader>
+              <CardTitle>Revenue Breakdown</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={revenueBreakdown}
@@ -225,62 +224,62 @@ export default function BillingPage() {
                     <Tooltip formatter={(value) => `₹${value.toLocaleString()}`} />
                   </PieChart>
                 </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Billing Records Table */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0">
-              <CardTitle>Recent Invoices</CardTitle>
-              <CreateInvoiceDialog>
-                <Button>
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create Invoice
-                </Button>
-              </CreateInvoiceDialog>
-            </CardHeader>
-            <CardContent>
-              <div className="rounded-lg border border-border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Invoice ID</TableHead>
-                      <TableHead>Patient Name</TableHead>
-                      <TableHead>Patient ID</TableHead>
-                      <TableHead>Service</TableHead>
-                      <TableHead>Amount</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {mockBillingRecords.map((record) => (
-                      <TableRow key={record.id}>
-                        <TableCell className="font-mono text-sm font-medium">{record.id}</TableCell>
-                        <TableCell className="font-medium">{record.patientName}</TableCell>
-                        <TableCell className="font-mono text-sm">{record.patientId}</TableCell>
-                        <TableCell>{record.service}</TableCell>
-                        <TableCell className="font-semibold">{record.amount}</TableCell>
-                        <TableCell>{record.date}</TableCell>
-                        <TableCell>
-                          <Badge
-                            className={
-                              record.status === "Paid" ? "bg-green-100 text-green-800" : "bg-orange-100 text-orange-800"
-                            }
-                          >
-                            {record.status}
-                          </Badge>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
               </div>
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+
+        {/* Billing Records Table */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0">
+            <CardTitle>Recent Invoices</CardTitle>
+            <CreateInvoiceDialog>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Create Invoice
+              </Button>
+            </CreateInvoiceDialog>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-lg border border-border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Invoice ID</TableHead>
+                    <TableHead>Patient Name</TableHead>
+                    <TableHead>Patient ID</TableHead>
+                    <TableHead>Service</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {mockBillingRecords.map((record) => (
+                    <TableRow key={record.id}>
+                      <TableCell className="font-mono text-sm font-medium">{record.id}</TableCell>
+                      <TableCell className="font-medium">{record.patientName}</TableCell>
+                      <TableCell className="font-mono text-sm">{record.patientId}</TableCell>
+                      <TableCell>{record.service}</TableCell>
+                      <TableCell className="font-semibold">{record.amount}</TableCell>
+                      <TableCell>{record.date}</TableCell>
+                      <TableCell>
+                        <Badge
+                          className={
+                            record.status === "Paid" ? "bg-green-100 text-green-800" : "bg-orange-100 text-orange-800"
+                          }
+                        >
+                          {record.status}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </main>
   )
 }

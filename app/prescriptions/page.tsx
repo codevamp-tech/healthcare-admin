@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppSidebar } from "@/components/app-sidebar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -213,131 +212,127 @@ export default function PrescriptionsPage() {
   })
 
   return (
-    <div className="flex min-h-screen">
-      <AppSidebar />
+    <main className="flex-1">
+      <div className="container py-8 px-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Prescriptions</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Manage prescriptions and medications</p>
+        </div>
 
-      <main className="flex-1 ml-64">
-        <div className="container py-8 px-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">Prescriptions</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Manage prescriptions and medications</p>
-          </div>
-
-          {/* Pharmacy Stats */}
-          <div className="grid gap-6 md:grid-cols-3 mb-8">
-            <Card
-              className="cursor-pointer hover:bg-accent transition-colors"
-              onClick={() => setFilterStatus("active")}
-            >
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Active Prescriptions</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">156</div>
-                <p className="text-xs text-muted-foreground mt-1">Currently active</p>
-              </CardContent>
-            </Card>
-
-            <Card
-              className="cursor-pointer hover:bg-accent transition-colors"
-              onClick={() => setFilterStatus("filled")}
-            >
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Filled</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-600">342</div>
-                <p className="text-xs text-muted-foreground mt-1">This month</p>
-              </CardContent>
-            </Card>
-
-            <Card
-              className="cursor-pointer hover:bg-accent transition-colors"
-              onClick={() => setFilterStatus("refills")}
-            >
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Pending Refills</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-blue-600">23</div>
-                <p className="text-xs text-muted-foreground mt-1">Awaiting approval</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Prescriptions Table */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0">
-              <CardTitle>Recent Prescriptions</CardTitle>
-              <CreatePrescriptionDialog>
-                <Button>
-                  <Pill className="h-4 w-4 mr-2" />
-                  Create Prescription
-                </Button>
-              </CreatePrescriptionDialog>
+        {/* Pharmacy Stats */}
+        <div className="grid gap-6 md:grid-cols-3 mb-8">
+          <Card
+            className="cursor-pointer hover:bg-accent transition-colors"
+            onClick={() => setFilterStatus("active")}
+          >
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Active Prescriptions</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="rounded-lg border border-border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Patient Name</TableHead>
-                      <TableHead>ID</TableHead>
-                      <TableHead>Medication</TableHead>
-                      <TableHead>Dosage</TableHead>
-                      <TableHead>Quantity</TableHead>
-                      <TableHead>Issued Date</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>View</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredPrescriptions.slice(0, 4).map((rx) => (
-                      <TableRow key={rx.id}>
-                        <TableCell className="font-medium">{rx.patientName}</TableCell>
-                        <TableCell className="font-mono text-sm">{rx.patientId}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Pill className="h-4 w-4 text-muted-foreground" />
-                            {rx.medication}
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-sm">{rx.dosage}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Package className="h-4 w-4 text-muted-foreground" />
-                            {rx.quantity}
-                          </div>
-                        </TableCell>
-                        <TableCell>{rx.issued}</TableCell>
-                        <TableCell>
-                          <Badge
-                            className={
-                              rx.status === "Filled" ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"
-                            }
-                          >
-                            {rx.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setSelectedPatientMeds(rx.patientId)}
-                            title="View all prescribed medicines"
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+              <div className="text-2xl font-bold">156</div>
+              <p className="text-xs text-muted-foreground mt-1">Currently active</p>
+            </CardContent>
+          </Card>
+
+          <Card
+            className="cursor-pointer hover:bg-accent transition-colors"
+            onClick={() => setFilterStatus("filled")}
+          >
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Filled</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">342</div>
+              <p className="text-xs text-muted-foreground mt-1">This month</p>
+            </CardContent>
+          </Card>
+
+          <Card
+            className="cursor-pointer hover:bg-accent transition-colors"
+            onClick={() => setFilterStatus("refills")}
+          >
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Pending Refills</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-600">23</div>
+              <p className="text-xs text-muted-foreground mt-1">Awaiting approval</p>
             </CardContent>
           </Card>
         </div>
-      </main>
+
+        {/* Prescriptions Table */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0">
+            <CardTitle>Recent Prescriptions</CardTitle>
+            <CreatePrescriptionDialog>
+              <Button>
+                <Pill className="h-4 w-4 mr-2" />
+                Create Prescription
+              </Button>
+            </CreatePrescriptionDialog>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-lg border border-border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Patient Name</TableHead>
+                    <TableHead>ID</TableHead>
+                    <TableHead>Medication</TableHead>
+                    <TableHead>Dosage</TableHead>
+                    <TableHead>Quantity</TableHead>
+                    <TableHead>Issued Date</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>View</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredPrescriptions.slice(0, 4).map((rx) => (
+                    <TableRow key={rx.id}>
+                      <TableCell className="font-medium">{rx.patientName}</TableCell>
+                      <TableCell className="font-mono text-sm">{rx.patientId}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Pill className="h-4 w-4 text-muted-foreground" />
+                          {rx.medication}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm">{rx.dosage}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Package className="h-4 w-4 text-muted-foreground" />
+                          {rx.quantity}
+                        </div>
+                      </TableCell>
+                      <TableCell>{rx.issued}</TableCell>
+                      <TableCell>
+                        <Badge
+                          className={
+                            rx.status === "Filled" ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"
+                          }
+                        >
+                          {rx.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setSelectedPatientMeds(rx.patientId)}
+                          title="View all prescribed medicines"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* View All Prescriptions Modal */}
       {showAllModal && (
@@ -470,6 +465,6 @@ export default function PrescriptionsPage() {
           </Card>
         </div>
       )}
-    </div>
+    </main>
   )
 }

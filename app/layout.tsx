@@ -1,22 +1,25 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Inter, Source_Serif_4, JetBrains_Mono } from "next/font/google"
+import { Poppins, Libre_Baskerville, IBM_Plex_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { AIChatbot } from "@/components/ai-chatbot"
 import "./globals.css"
 
-const inter = Inter({
+const fontSans = Poppins({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
 })
 
-const sourceSerif4 = Source_Serif_4({
+const fontSerif = Libre_Baskerville({
   subsets: ["latin"],
+  weight: ["400", "700"],
   variable: "--font-serif",
 })
 
-const jetbrainsMono = JetBrains_Mono({
+const fontMono = IBM_Plex_Mono({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   variable: "--font-mono",
 })
 
@@ -49,6 +52,9 @@ export const viewport: Viewport = {
   maximumScale: 1,
 }
 
+import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -56,8 +62,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background">
-      <body className={`${inter.variable} ${sourceSerif4.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
-        {children}
+      <body className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} font-sans antialiased`}>
+        <SidebarProvider defaultOpen={true}>
+          <AppSidebar />
+          <SidebarInset>
+            <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 md:hidden">
+              <SidebarTrigger className="-ml-1" />
+            </header>
+            {children}
+          </SidebarInset>
+        </SidebarProvider>
         <AIChatbot />
         <Analytics />
       </body>

@@ -82,55 +82,69 @@ const navItems = [
   },
 ]
 
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar"
+
 export function AppSidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-sidebar-border bg-sidebar overflow-y-auto">
-      <div className="flex h-full flex-col">
-        {/* Logo/Header */}
-        <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-6 flex-shrink-0">
+    <Sidebar>
+      <SidebarHeader className="h-16 border-b border-sidebar-border px-6">
+        <div className="flex h-full items-center gap-2">
           <Activity className="h-6 w-6 text-primary" />
           <span className="text-lg font-semibold text-sidebar-foreground">MedicalHub</span>
         </div>
+      </SidebarHeader>
 
-        {/* Navigation */}
-        <nav className="flex-1 space-y-1 p-4">
+      <SidebarContent className="p-4">
+        <SidebarMenu className="space-y-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href
             const Icon = item.icon
 
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent/50",
-                )}
-              >
-                <Icon className="h-5 w-5" />
-                {item.title}
-              </Link>
+              <SidebarMenuItem key={item.href}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive}
+                  tooltip={item.title}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent/50",
+                  )}
+                >
+                  <Link href={item.href}>
+                    <Icon className="h-5 w-5" />
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             )
           })}
-        </nav>
+        </SidebarMenu>
+      </SidebarContent>
 
-        {/* Footer */}
-        <div className="border-t border-sidebar-border p-4 flex-shrink-0">
-          <div className="flex items-center gap-3 rounded-lg bg-sidebar-accent px-3 py-2">
-            <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
-              DR
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-sidebar-foreground truncate">Dr. Admin</p>
-              <p className="text-xs text-muted-foreground truncate">admin@medicalhub.com</p>
-            </div>
+      <SidebarFooter className="border-t border-sidebar-border p-4">
+        <div className="flex items-center gap-3 rounded-lg bg-sidebar-accent px-3 py-2">
+          <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+            DR
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-sidebar-foreground truncate">Dr. Admin</p>
+            <p className="text-xs text-muted-foreground truncate">admin@medicalhub.com</p>
           </div>
         </div>
-      </div>
-    </aside>
+      </SidebarFooter>
+    </Sidebar>
   )
 }

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppSidebar } from "@/components/app-sidebar"
 import { PageHeader } from "@/components/page-header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -216,147 +215,143 @@ export default function FolderExplorerPage() {
   // Get files from selected folder
   const filesInFolder: FileItem[] = selectedNode?.children
     ? selectedNode.children
-        .filter((child) => child.type === "file")
-        .map((child) => ({
-          id: child.id,
-          name: child.name,
-          type: child.name.split(".").pop()?.toUpperCase() || "FILE",
-          size: "2.4 MB",
-          date: "2024-12-15",
-          path: child.path,
-        }))
+      .filter((child) => child.type === "file")
+      .map((child) => ({
+        id: child.id,
+        name: child.name,
+        type: child.name.split(".").pop()?.toUpperCase() || "FILE",
+        size: "2.4 MB",
+        date: "2024-12-15",
+        path: child.path,
+      }))
     : []
 
   return (
-    <div className="flex min-h-screen">
-      <AppSidebar />
+    <main className="flex-1">
+      <div className="container py-8 px-8">
+        <PageHeader
+          title="Folder Explorer"
+          description="Browse orthopedic records by hierarchical folder structure"
+        />
 
-      <main className="flex-1 ml-64">
-        <div className="container py-8 px-8">
-          <PageHeader
-            title="Folder Explorer"
-            description="Browse orthopedic records by hierarchical folder structure"
-          />
+        <div className="grid gap-6 lg:grid-cols-[350px_1fr]">
+          {/* Left: Tree Navigation */}
+          <Card className="h-fit">
+            <CardHeader>
+              <CardTitle className="text-base">Folder Structure</CardTitle>
+              <p className="text-xs text-muted-foreground">Year → Month → Condition → Patient → Imaging Type</p>
+            </CardHeader>
+            <CardContent className="max-h-[calc(100vh-280px)] overflow-y-auto">
+              <FolderTree data={folderStructure} onSelect={setSelectedNode} selectedId={selectedNode?.id || null} />
+            </CardContent>
+          </Card>
 
-          <div className="grid gap-6 lg:grid-cols-[350px_1fr]">
-            {/* Left: Tree Navigation */}
-            <Card className="h-fit lg:sticky lg:top-8">
-              <CardHeader>
-                <CardTitle className="text-base">Folder Structure</CardTitle>
-                <p className="text-xs text-muted-foreground">Year → Month → Condition → Patient → Imaging Type</p>
-              </CardHeader>
-              <CardContent className="max-h-[calc(100vh-280px)] overflow-y-auto">
-                <FolderTree data={folderStructure} onSelect={setSelectedNode} selectedId={selectedNode?.id || null} />
-              </CardContent>
-            </Card>
-
-            {/* Right: Files Display */}
-            <div className="space-y-6">
-              {selectedNode ? (
-                <>
-                  {/* Path Breadcrumb */}
-                  <Card>
-                    <CardContent className="pt-6">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                        <span className="font-semibold text-foreground">Current Path:</span>
-                        <span className="font-mono text-xs bg-muted px-2 py-1 rounded">{selectedNode.path}</span>
-                      </div>
-
-                      {/* Toolbar */}
-                      <div className="flex items-center gap-3">
-                        <Select value={sortBy} onValueChange={setSortBy}>
-                          <SelectTrigger className="w-[160px]">
-                            <ArrowUpDown className="h-4 w-4 mr-2" />
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="newest">Newest First</SelectItem>
-                            <SelectItem value="oldest">Oldest First</SelectItem>
-                            <SelectItem value="name">Alphabetical</SelectItem>
-                          </SelectContent>
-                        </Select>
-
-                        <Select value={filterType} onValueChange={setFilterType}>
-                          <SelectTrigger className="w-[160px]">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="all">All Types</SelectItem>
-                            <SelectItem value="pdf">PDF Only</SelectItem>
-                            <SelectItem value="images">Images Only</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Files Grid */}
-                  {filesInFolder.length > 0 ? (
-                    <div className="grid gap-4">
-                      {filesInFolder.map((file) => (
-                        <Card key={file.id} className="hover:bg-accent/50 transition-colors">
-                          <CardContent className="p-4">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-4 flex-1 min-w-0">
-                                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                                  <FileText className="h-6 w-6 text-primary" />
-                                </div>
-
-                                <div className="flex-1 min-w-0">
-                                  <p className="font-medium text-foreground truncate">{file.name}</p>
-                                  <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
-                                    <Badge variant="outline" className="text-xs">
-                                      {file.type}
-                                    </Badge>
-                                    <span>{file.size}</span>
-                                    <span>•</span>
-                                    <span>{file.date}</span>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="flex items-center gap-2">
-                                <Button variant="outline" size="sm">
-                                  <UserPlus className="h-4 w-4 mr-1" />
-                                  Attach to Patient
-                                </Button>
-                                <Button variant="outline" size="sm">
-                                  <Sparkles className="h-4 w-4 mr-1" />
-                                  Analyze AI
-                                </Button>
-                                <Button variant="ghost" size="sm">
-                                  <Download className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  ) : (
-                    <Card>
-                      <CardContent className="py-12 text-center">
-                        <FileText className="h-16 w-16 mx-auto text-muted-foreground opacity-30 mb-4" />
-                        <p className="text-muted-foreground">
-                          {selectedNode.type === "folder" ? "This folder is empty" : "No files to display"}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  )}
-                </>
-              ) : (
+          {/* Right: Files Display */}
+          <div className="space-y-6">
+            {selectedNode ? (
+              <>
+                {/* Path Breadcrumb */}
                 <Card>
-                  <CardContent className="py-24 text-center">
-                    <FileText className="h-20 w-20 mx-auto text-muted-foreground opacity-20 mb-4" />
-                    <h3 className="text-lg font-semibold text-foreground mb-2">Select a Folder</h3>
-                    <p className="text-muted-foreground">Choose a folder from the tree to view its contents</p>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                      <span className="font-semibold text-foreground">Current Path:</span>
+                      <span className="font-mono text-xs bg-muted px-2 py-1 rounded">{selectedNode.path}</span>
+                    </div>
+
+                    {/* Toolbar */}
+                    <div className="flex flex-wrap items-center gap-3">
+                      <Select value={sortBy} onValueChange={setSortBy}>
+                        <SelectTrigger className="w-[160px]">
+                          <ArrowUpDown className="h-4 w-4 mr-2" />
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="newest">Newest First</SelectItem>
+                          <SelectItem value="oldest">Oldest First</SelectItem>
+                          <SelectItem value="name">Alphabetical</SelectItem>
+                        </SelectContent>
+                      </Select>
+
+                      <Select value={filterType} onValueChange={setFilterType}>
+                        <SelectTrigger className="w-[160px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Types</SelectItem>
+                          <SelectItem value="pdf">PDF Only</SelectItem>
+                          <SelectItem value="images">Images Only</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </CardContent>
                 </Card>
-              )}
-            </div>
+
+                {/* Files Grid */}
+                {filesInFolder.length > 0 ? (
+                  <div className="grid gap-4">
+                    {filesInFolder.map((file) => (
+                      <Card key={file.id} className="hover:bg-accent/50 transition-colors">
+                        <CardContent className="p-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div className="flex items-center gap-4 flex-1 min-w-0">
+                              <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                <FileText className="h-6 w-6 text-primary" />
+                              </div>
+
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-foreground truncate">{file.name}</p>
+                                <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                                  <Badge variant="outline" className="text-xs">
+                                    {file.type}
+                                  </Badge>
+                                  <span>{file.size}</span>
+                                  <span>•</span>
+                                  <span>{file.date}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex flex-wrap items-center gap-2">
+                              <Button variant="outline" size="sm">
+                                <UserPlus className="h-4 w-4 mr-1" />
+                                <span className="hidden sm:inline">Attach</span>
+                              </Button>
+                              <Button variant="outline" size="sm">
+                                <Sparkles className="h-4 w-4 mr-1" />
+                                <span className="hidden sm:inline">Analyze AI</span>
+                              </Button>
+                              <Button variant="ghost" size="sm">
+                                <Download className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <Card>
+                    <CardContent className="py-12 text-center">
+                      <FileText className="h-16 w-16 mx-auto text-muted-foreground opacity-30 mb-4" />
+                      <p className="text-muted-foreground">
+                        {selectedNode.type === "folder" ? "This folder is empty" : "No files to display"}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+              </>
+            ) : (
+              <Card>
+                <CardContent className="py-24 text-center">
+                  <FileText className="h-20 w-20 mx-auto text-muted-foreground opacity-20 mb-4" />
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Select a Folder</h3>
+                  <p className="text-muted-foreground">Choose a folder from the tree to view its contents</p>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   )
 }
