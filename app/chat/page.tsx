@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { ChatInterface } from "@/components/chat/chat-interface"
 import { ResponsePanel } from "@/components/chat/response-panel"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, ChevronLeft, ChevronRight, CloudCog, PanelLeftClose, PanelLeftOpen } from "lucide-react"
+import { ArrowLeft, PanelLeftClose, PanelLeftOpen } from "lucide-react"
 
 export default function ChatPage() {
   const router = useRouter()
@@ -46,10 +46,10 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex h-screen bg-background">
+    <main className="flex flex-col md:flex-row h-[calc(100vh-64px)] md:h-[calc(100vh-0px)] bg-background overflow-hidden">
       {/* Left Side - Chat Interface */}
       {showChatInput && (
-        <div className="flex-1 border-r border-border flex flex-col">
+        <div className="flex-1 border-r border-border flex flex-col min-h-0">
           <div className="border-b border-border px-6 py-3 flex items-center justify-between flex-shrink-0 bg-background">
             <div>
               <h2 className="text-lg font-bold text-foreground">Medical AI Assistant</h2>
@@ -77,7 +77,7 @@ export default function ChatPage() {
 
       {/* Right Side - Response Panel */}
       <div
-        className={`${showChatInput ? "w-1/2" : "flex-1"} border-l border-border bg-slate-50 dark:bg-slate-950 overflow-hidden flex flex-col relative`}
+        className={`${showChatInput ? "w-full md:w-1/2" : "flex-1"} border-l border-border bg-slate-50 dark:bg-slate-950 overflow-hidden flex flex-col relative min-h-0`}
       >
         {!showChatInput && (
           <div className="border-b border-border px-6 py-3 flex items-center justify-between flex-shrink-0 bg-background">
@@ -108,6 +108,6 @@ export default function ChatPage() {
           isMaximized={!showChatInput}
         />
       </div>
-    </div>
+    </main>
   )
 }

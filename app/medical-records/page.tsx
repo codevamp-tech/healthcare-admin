@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { AppSidebar } from "@/components/app-sidebar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -71,111 +70,107 @@ export default function MedicalRecordsPage() {
   const [selectedRecord, setSelectedRecord] = useState<(typeof mockMedicalRecords)[0] | null>(null)
 
   return (
-    <div className="flex min-h-screen">
-      <AppSidebar />
+    <main className="flex-1">
+      <div className="container py-8 px-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Medical Records</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Access and manage patient medical records</p>
+        </div>
 
-      <main className="flex-1 ml-64">
-        <div className="container py-8 px-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">Medical Records</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Access and manage patient medical records</p>
-          </div>
-
-          {/* Records Stats */}
-          <div className="grid gap-6 md:grid-cols-3 mb-8">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Total Records</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">2,847</div>
-                <p className="text-xs text-muted-foreground mt-1">All records</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Active</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-600">2,756</div>
-                <p className="text-xs text-muted-foreground mt-1">Currently accessible</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Archived</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-gray-600">91</div>
-                <p className="text-xs text-muted-foreground mt-1">In archive</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Medical Records Table */}
+        {/* Records Stats */}
+        <div className="grid gap-6 md:grid-cols-3 mb-8">
           <Card>
-            <CardHeader>
-              <CardTitle>Recent Medical Records</CardTitle>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Records</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="rounded-lg border border-border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Record ID</TableHead>
-                      <TableHead>Patient Name</TableHead>
-                      <TableHead>Patient ID</TableHead>
-                      <TableHead>Record Type</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Doctor</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Action</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {mockMedicalRecords.map((record) => (
-                      <TableRow key={record.id}>
-                        <TableCell className="font-mono text-sm font-medium">{record.id}</TableCell>
-                        <TableCell className="font-medium">{record.patientName}</TableCell>
-                        <TableCell className="font-mono text-sm">{record.patientId}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <FileText className="h-4 w-4 text-muted-foreground" />
-                            {record.recordType}
-                          </div>
-                        </TableCell>
-                        <TableCell>{record.date}</TableCell>
-                        <TableCell>{record.doctor}</TableCell>
-                        <TableCell>
-                          <Badge
-                            className={
-                              record.status === "Active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
-                            }
-                          >
-                            {record.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex gap-2">
-                            <Button variant="ghost" size="sm" onClick={() => setSelectedRecord(record)}>
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="sm">
-                              <Download className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+              <div className="text-2xl font-bold">2,847</div>
+              <p className="text-xs text-muted-foreground mt-1">All records</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Active</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">2,756</div>
+              <p className="text-xs text-muted-foreground mt-1">Currently accessible</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Archived</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-gray-600">91</div>
+              <p className="text-xs text-muted-foreground mt-1">In archive</p>
             </CardContent>
           </Card>
         </div>
-      </main>
+
+        {/* Medical Records Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Medical Records</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-lg border border-border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Record ID</TableHead>
+                    <TableHead>Patient Name</TableHead>
+                    <TableHead>Patient ID</TableHead>
+                    <TableHead>Record Type</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Doctor</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {mockMedicalRecords.map((record) => (
+                    <TableRow key={record.id}>
+                      <TableCell className="font-mono text-sm font-medium">{record.id}</TableCell>
+                      <TableCell className="font-medium">{record.patientName}</TableCell>
+                      <TableCell className="font-mono text-sm">{record.patientId}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <FileText className="h-4 w-4 text-muted-foreground" />
+                          {record.recordType}
+                        </div>
+                      </TableCell>
+                      <TableCell>{record.date}</TableCell>
+                      <TableCell>{record.doctor}</TableCell>
+                      <TableCell>
+                        <Badge
+                          className={
+                            record.status === "Active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"
+                          }
+                        >
+                          {record.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <Button variant="ghost" size="sm" onClick={() => setSelectedRecord(record)}>
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            <Download className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {selectedRecord && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -218,6 +213,6 @@ export default function MedicalRecordsPage() {
           </Card>
         </div>
       )}
-    </div>
+    </main>
   )
 }
